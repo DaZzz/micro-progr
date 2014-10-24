@@ -50,7 +50,7 @@ Group=Added files,Assembly,Resources,Misc,Modules
 [Collapse]
 1=
 [Size]
-1=0,0,0,0,172
+1=0,0,0,0,231
 [VersionControl]
 Settings=1246
 Milestones=129
@@ -61,7 +61,7 @@ MilestoneOnTime=2
 MilestoneOnDate=0
 MilestoneOnDateWhen=1
 MilestoneOnDateStatus=0
-MilestoneOnDateDate=8
+MilestoneOnDateDate=24
 MilestoneOnDateTimeYear=2014
 MilestoneOnDateTimeMonth=10
 MilestoneOnDateTimeDate=8

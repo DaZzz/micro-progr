@@ -24,13 +24,8 @@ input_one_symbol:
 	add 	bx, ax	; DX += AX
 	jmp		input_one_symbol
 exit:
-	;mov 	ax, 3	; clear screen
-	;int 	10h		; call clear sreen
-	        	mov 		ah, 2h
-        	mov		dl, 0ah
-        	int 		21h
-        	mov		dl, 0dh
-        	int		21h      
+    call print_linebreak     
+    
 	mov		ax, bx	; result always goes to ax 
 	ret
 read_number endp

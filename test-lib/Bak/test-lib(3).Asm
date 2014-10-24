@@ -14,16 +14,21 @@ start:
 	mov 	ds, ax 
 	mov 	es, ax
 	
-	call read_number
-	call print_number
+	; Read write number test
+	call 	read_number
+	call 	print_number
+	call 	print_linebreak
 	
-	; Pause
-	mov 	ah,1
-	int 	21h
-
-	call read_number
-	call print_number
-
+	call 	read_number
+	call 	print_number
+	call 	print_linebreak
+	
+	; Test print array
+	mov 	cx, 5
+	mov 	di, numbers
+	call 	print_array 
+	
+	
 	; Pause
 	mov 	ah,1
 	int 	21h
@@ -36,6 +41,7 @@ cseg    ends
 
 ; data
 dseg    segment byte
+	numbers 			dw 23,34,54,65,76
 dseg    ends
 
 

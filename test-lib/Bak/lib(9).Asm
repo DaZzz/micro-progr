@@ -24,8 +24,8 @@ input_one_symbol:
 	add 	bx, ax	; DX += AX
 	jmp		input_one_symbol
 exit:
-	mov 	ax, 3	; clear screen
-	int 	10h		; call clear sreen
+	;mov 	ax, 3	; clear screen
+	;int 	10h		; call clear sreen
 	mov		ax, bx	; result always goes to ax 
 	ret
 read_number endp
@@ -33,7 +33,7 @@ read_number endp
 ;;;
 ; Output number from AX
 ;;;
-print_number proc uses di
+print_number proc
 	pusha	; put all registers on stack
 	mov		di, offset string_buffer
 	mov		cx, 5

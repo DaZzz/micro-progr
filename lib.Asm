@@ -74,13 +74,15 @@ print_number endp
 ;;;
 print_array proc uses ax
 while_has_numbers:
-	mov 	ah, 02h 			; print symbol (divisor)
-	mov 	dl, ' '
-	int		21h
-	
 	mov 	ax, [di]
 	call	print_number
 	add		di, 2				; add two because of WORD type
+	
+	; print symbol (divisor)
+	mov 	ah, 02h
+	mov 	dl, ' '
+	int		21h
+	
 	loop	while_has_numbers
 	
 	call	print_linebreak

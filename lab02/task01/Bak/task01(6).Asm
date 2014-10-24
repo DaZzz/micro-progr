@@ -67,6 +67,8 @@ start:
 	call	read_n_numbers
 		
 	; Output 
+	mov		cx, even_count
+	mov		di, even_numbers
 	call	print_array
 	
 	; Pause

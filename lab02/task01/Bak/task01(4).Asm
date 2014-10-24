@@ -21,6 +21,7 @@ read_n_numbers proc uses cx
 while_has_numbers:
 	pusha
 	call	read_number
+	
 	test	ax, 1
 	jz	 	if_even
 	jmp		if_odd

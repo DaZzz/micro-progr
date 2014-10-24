@@ -44,7 +44,6 @@ if_odd:
 end_if:
 	popa
 	loop 	while_has_numbers
-
 	ret
 read_n_numbers endp
 

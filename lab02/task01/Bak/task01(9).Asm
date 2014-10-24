@@ -17,7 +17,6 @@ cseg segment
 ;;;
 read_n_numbers proc uses cx
 	mov 	cx, n
-	call	print_debug
 	
 while_has_numbers:
 	pusha

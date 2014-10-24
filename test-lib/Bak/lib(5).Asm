@@ -24,13 +24,6 @@ input_one_symbol:
 	add 	bx, ax	; DX += AX
 	jmp		input_one_symbol
 exit:
-	;mov 	ax, 3	; clear screen
-	;int 	10h		; call clear sreen
-	;mov 	ah, 2h
-	;mov		dl, 0ah
-	;int 	21h
-	;mov		dl, 0dh
-    ;int		21h
     call print_linebreak     
     
 	mov		ax, bx	; result always goes to ax 
@@ -40,8 +33,7 @@ read_number endp
 ;;;
 ; Output number from AX
 ;;;
-print_number proc
-	pusha	; put all registers on stack
+print_number proc uses di bx cx dx ax
 	mov		di, offset string_buffer
 	mov		cx, 5
 	mov		bl, ' '
@@ -72,7 +64,6 @@ number_not_zero:
 	mov		dx, di	; last written address to DX
 	mov		ah, 09h	; print string in DX on screen
 	int		21h		
-	popa			; return registers in initial state
 	ret
 print_number endp
 

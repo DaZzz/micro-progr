@@ -26,6 +26,11 @@ input_one_symbol:
 exit:
 	;mov 	ax, 3	; clear screen
 	;int 	10h		; call clear sreen
+	        	mov 		ah, 2h
+        	mov		dl, 0ah
+        	int 		21h
+        	mov		dl, 0dh
+        	int		21h      
 	mov		ax, bx	; result always goes to ax 
 	ret
 read_number endp
@@ -33,7 +38,7 @@ read_number endp
 ;;;
 ; Output number from AX
 ;;;
-print_number proc uses di
+print_number proc
 	pusha	; put all registers on stack
 	mov		di, offset string_buffer
 	mov		cx, 5

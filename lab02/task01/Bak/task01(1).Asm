@@ -24,7 +24,7 @@ while_has_numbers:
 	test	ax, 1
 	jz	 	if_even
 	jmp		if_odd
-	
+
 if_even:
 	lea 	di, even_numbers	; put even numbers address to di
 	add		di, even_count		; add twice index, because of dw type

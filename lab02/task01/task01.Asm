@@ -100,6 +100,7 @@ dseg segment byte
 	odd_count			dw 0
 	even_numbers		dw 100 dup(?)
 	odd_numbers			dw 100 dup(?)
+	numbers 			dw 23,34,54,65,76
 dseg ends
 
 end start

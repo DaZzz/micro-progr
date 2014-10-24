@@ -69,8 +69,10 @@ print_number endp
 
 ;;;
 ; Print array of WORD numbers
+;   cx - counter
+;   di - offset
 ;;;
-print_array proc uses di dx ax
+print_array proc uses ax
 while_has_numbers:
 	mov 	ah, 02h 			; print symbol (divisor)
 	mov 	dl, ' '
