@@ -52,7 +52,7 @@ MilestoneOnTime=2
 MilestoneOnDate=0
 MilestoneOnDateWhen=1
 MilestoneOnDateStatus=0
-MilestoneOnDateDate=8
+MilestoneOnDateDate=24
 MilestoneOnDateTimeYear=2014
 MilestoneOnDateTimeMonth=9
 MilestoneOnDateTimeDate=19
@@ -90,7 +90,7 @@ Options=52
 1=
 1001=
 [Size]
-1=0,0,0,0,537
+1=0,0,0,0,89
 1001=
 [BookMark]
 0=

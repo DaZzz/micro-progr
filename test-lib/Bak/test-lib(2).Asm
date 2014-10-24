@@ -14,7 +14,6 @@ start:
 	mov 	ds, ax 
 	mov 	es, ax
 	
-	call print_debug
 	call read_number
 	call print_number
 	
@@ -22,6 +21,17 @@ start:
 	mov 	ah,1
 	int 	21h
 	
+	mov 	ax, dseg
+	mov 	ds, ax 
+	mov 	es, ax
+	
+	call read_number
+	call print_number
+
+	; Pause
+	mov 	ah,1
+	int 	21h
+			
 	; Exit
 	mov     ax, 4C00h
    	int     21h

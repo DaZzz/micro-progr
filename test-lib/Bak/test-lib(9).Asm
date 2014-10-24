@@ -1,3 +1,4 @@
+.286
 assume  cs:cseg, ds:dseg, ss:sseg
 
 ;;;
@@ -13,8 +14,13 @@ start:
 	mov 	ds, ax 
 	mov 	es, ax
 	
-	call print_dbg
+	call print_debug
 	
+	; Pause
+	mov 	ah,1
+	int 	21h
+	
+	; Exit
 	mov     ax, 4C00h
    	int     21h
 cseg    ends

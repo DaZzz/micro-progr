@@ -70,7 +70,7 @@ print_number endp
 ;;;
 ; Print array of WORD numbers
 ;;;
-print_array proc uses ax
+print_array proc uses di dx ax
 while_has_numbers:
 	mov 	ah, 02h 			; print symbol (divisor)
 	mov 	dl, ' '

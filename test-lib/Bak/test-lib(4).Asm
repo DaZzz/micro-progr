@@ -15,12 +15,20 @@ start:
 	mov 	es, ax
 	
 	call print_debug
-	call input_number
+	call read_number
+	call print_number
 	
 	; Pause
 	mov 	ah,1
 	int 	21h
-	
+
+	call read_number
+	call print_number
+
+	; Pause
+	mov 	ah,1
+	int 	21h
+			
 	; Exit
 	mov     ax, 4C00h
    	int     21h

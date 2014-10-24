@@ -33,7 +33,8 @@ read_number endp
 ;;;
 ; Output number from AX
 ;;;
-print_number proc uses di bx cx dx ax
+print_number proc
+	pusha	; put all registers on stack
 	mov		di, offset string_buffer
 	mov		cx, 5
 	mov		bl, ' '
@@ -50,7 +51,7 @@ fill_buffer_with_whitespaces:
 	std
 	
 number_not_zero:
-	xor 	dx, dx 	; to avoid overflow during devision by 10
+	mov 	dx, 0 	; to avoid overflow during devision by 10
 	mov		cx, 10
 	div		cx		; divide AX by CX result goes to AX, rest to DX
 	add		dx, '0'	; transform to symbol code
@@ -64,13 +65,14 @@ number_not_zero:
 	mov		dx, di	; last written address to DX
 	mov		ah, 09h	; print string in DX on screen
 	int		21h		
+	popa			; return registers in initial state
 	ret
 print_number endp
 
 ;;;
 ; Print array of WORD numbers
 ;;;
-print_array proc uses ax
+print_array proc uses di dx ax
 while_has_numbers:
 	mov 	ah, 02h 			; print symbol (divisor)
 	mov 	dl, ' '
