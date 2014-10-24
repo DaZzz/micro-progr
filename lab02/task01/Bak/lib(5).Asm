@@ -8,6 +8,7 @@ cseg segment public
 ; Input number from a keyboard
 ;;;
 read_number proc uses cx bx
+	xor 	ax, ax
 	xor 	bx, bx	; zeroize bx
 	mov 	cx, 10  ; assign cx to 10 for multiplication 
 	
@@ -72,7 +73,7 @@ print_number endp
 ;;;
 ; Print array of WORD numbers
 ;;;
-print_array proc
+print_array proc uses di dx ax
 while_has_numbers:
 	mov 	ah, 02h 			; print symbol (divisor)
 	mov 	dl, ' '

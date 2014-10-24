@@ -15,7 +15,7 @@ input_one_symbol:
 	mov 	ah, 1h 	; input symbol
 	int 	21h		; call function 	
 	cmp 	al, 13 	; compare AL to enter key
-	jz		exit
+	jz		qwexit
 	xchg	ax, bx	; temporary store ax in bx
 	mul		cx		; multiply ax and cx, result goes to dx:ax
 	xchg	ax, bx	; swap back
@@ -23,7 +23,7 @@ input_one_symbol:
 	sub		al,	'0'	; subtract code symbol from al
 	add 	bx, ax	; DX += AX
 	jmp		input_one_symbol
-exit:
+qwexit:
 	mov 	ax, 3	; clear screen
 	int 	10h		; call clear sreen
 	mov		ax, bx	; result always goes to ax 
@@ -72,7 +72,7 @@ print_number endp
 ;;;
 ; Print array of WORD numbers
 ;;;
-print_array proc cx dx
+print_array proc uses di dx ax
 while_has_numbers:
 	mov 	ah, 02h 			; print symbol (divisor)
 	mov 	dl, ' '

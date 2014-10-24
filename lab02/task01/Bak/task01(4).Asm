@@ -17,11 +17,9 @@ cseg segment
 ;;;
 read_n_numbers proc uses cx
 	mov 	cx, n
-	
 while_has_numbers:
 	pusha
 	call	read_number
-	
 	test	ax, 1
 	jz	 	if_even
 	jmp		if_odd
@@ -67,11 +65,22 @@ start:
 	int 	21h
 	call	read_n_numbers
 		
-	; Output 
+	; Output
+	mov 	ah, 09h
+	lea 	dx, str_even_numbers
+	int 	21h
 	mov		cx, even_count
-	mov		di, even_numbers
+	lea		di, even_numbers
 	call	print_array
 	
+	; Output
+	mov 	ah, 09h
+	lea 	dx, str_odd_numbers
+	int 	21h 
+	mov		cx, odd_count
+	lea		di, odd_numbers
+	call	print_array
+		
 	; Pause
 	mov 	ah,1
 	int 	21h
@@ -93,7 +102,7 @@ sseg ends
 ;;;
 dseg segment byte 
 	str_enter_n		 	db "Enter N: $"
-	str_enter_numbers	db "Enter N numbers: $"
+	str_enter_numbers	db "Enter N numbers:", 10, 13, '$'
 	str_even_numbers	db "Even numbers: $"
 	str_odd_numbers		db "Odd numbers: $"
 	n					dw ?

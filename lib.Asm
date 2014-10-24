@@ -73,6 +73,8 @@ print_number endp
 ;   di - offset
 ;;;
 print_array proc uses ax
+	cmp 	cx, 0
+	je		exit
 while_has_numbers:
 	mov 	ax, [di]
 	call	print_number
@@ -85,6 +87,7 @@ while_has_numbers:
 	
 	loop	while_has_numbers
 	
+exit:
 	call	print_linebreak
 	ret
 print_array endp
