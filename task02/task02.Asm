@@ -4,7 +4,7 @@ assume cs:cseg, ds:dseg, ss:sseg
 ;;;
 ; Includes
 ;;;
-include ..\..\lib.Asm
+include ..\lib.Asm
 
 
 ;;;
@@ -18,15 +18,20 @@ start:
 	mov 	ds, ax 
 	mov 	es, ax
 	
-	mov 	cx, 15  ; assign cx to 10 for multiplication 
-next_power:
-	mov 	[di], bx
-	shl     bx
-	jmp		next_power
+	mov 	cx, 16  ; power of two
+	mov 	ax, 1	; store current number
+	mov 	bx, 2	; store power
+	lea		di, powers_of_two
 	
-    call 	print     
-	mov		ax, bx	; result always goes to ax 
-	ret
+next_power:
+	mov 	[di], ax
+	add 	di, 2
+	mul     bx
+	loop	next_power
+	
+	mov 	cx, 16
+	lea 	di, powers_of_two  
+    call 	print_array     
 	
 	; Pause
 	mov 	ah,1
@@ -48,7 +53,7 @@ sseg ends
 ; Data
 ;;;
 dseg segment byte 
-	powers_of_two	 	dw 15 dup(?)
+	powers_of_two	 	dw 16 dup(?)
 dseg ends
 
 end start
