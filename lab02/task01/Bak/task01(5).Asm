@@ -73,7 +73,10 @@ start:
 	lea		di, even_numbers
 	call	print_array
 	
-	; Output 
+	; Output
+	mov 	ah, 09h
+	lea 	dx, str_odd_numbers
+	int 	21h 
 	mov		cx, odd_count
 	lea		di, odd_numbers
 	call	print_array

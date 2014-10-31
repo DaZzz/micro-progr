@@ -60,9 +60,9 @@ start:
 	mov 	n, ax
 	
 	; Read n numbers
-	mov 	ah, 09h
-	lea		dx, str_enter_numbers
-	int 	21h
+	;mov 	ah, 09h
+	;lea		dx, str_enter_numbers
+	;int 	21h
 	call	read_n_numbers
 		
 	; Output 

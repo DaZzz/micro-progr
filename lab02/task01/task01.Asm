@@ -66,20 +66,26 @@ start:
 	call	read_n_numbers
 		
 	; Output
+	cmp		even_count, 0
+	je		skip1
 	mov 	ah, 09h
 	lea 	dx, str_even_numbers
 	int 	21h
 	mov		cx, even_count
 	lea		di, even_numbers
 	call	print_array
-	
+skip1:
+
 	; Output
+	cmp		odd_count, 0
+	je		skip2		
 	mov 	ah, 09h
 	lea 	dx, str_odd_numbers
 	int 	21h 
 	mov		cx, odd_count
 	lea		di, odd_numbers
 	call	print_array
+skip2:
 		
 	; Pause
 	mov 	ah,1

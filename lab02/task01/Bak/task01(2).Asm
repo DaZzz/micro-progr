@@ -72,7 +72,7 @@ start:
 	mov		cx, even_count
 	lea		di, even_numbers
 	call	print_array
-	call 	print_linebreak,
+	call 	print_linebreak
 	
 	; Output
 	mov 	ah, 09h

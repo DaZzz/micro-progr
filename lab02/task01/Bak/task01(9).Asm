@@ -18,6 +18,7 @@ cseg segment
 read_n_numbers proc uses cx
 	mov 	cx, n
 while_has_numbers:
+	pusha
 	call	read_number
 	test	ax, 1
 	jz	 	if_even
@@ -40,6 +41,7 @@ if_odd:
 	jmp		end_if
 
 end_if:
+	popa
 	loop 	while_has_numbers
 	ret
 read_n_numbers endp

@@ -6,11 +6,26 @@ assume cs:cseg, ds:dseg, ss:sseg
 ;;;
 include ..\..\lib.Asm
 
-
 ;;;
 ; Code
 ;;;
 cseg segment 
+
+;;;
+; Swaps [di] and [di+2] if [di+2]
+; is greater
+;;;
+swap_next proc uses ax bx
+	mov 	ax, [di]
+	mov 	bx,	[di + 2]
+	cmp		ax, bx
+	
+	jna		return		
+	mov		[di], bx
+	mov		[di + 2], ax	
+return:	
+	ret
+swap_next endp
 
 start:
 	; Basic memory setup
@@ -18,21 +33,13 @@ start:
 	mov 	ds, ax 
 	mov 	es, ax
 	
-	mov 	cx, 16  ; power of two
-	mov 	ax, 1   ; number
-	mov 	bx, 2	; power
-	lea		di, powers_of_two
+	lea 	di, number 
 	
-next_power:
-	mov 	[di], ax 
-	add 	di, 2		; offset += 1 number
-	mul     bx			; ax *= 2
-	loop	next_power
+	call 	read_number
+	mov 	[di], ax
 	
-	mov 	cx, 16
-	lea 	di, powers_of_two  
-    call 	print_array     
-	
+	; Printing
+
 	; Pause
 	mov 	ah,1
 	int 	21h
@@ -53,7 +60,7 @@ sseg ends
 ; Data
 ;;;
 dseg segment byte 
-	powers_of_two	 	dw 16 dup(?)
+	number dw ?
 dseg ends
 
 end start

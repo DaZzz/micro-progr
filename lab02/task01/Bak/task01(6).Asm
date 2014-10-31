@@ -65,7 +65,10 @@ start:
 	int 	21h
 	call	read_n_numbers
 		
-	; Output 
+	; Output
+	mov 	ah, 09h
+	lea 	dx, str_even_numbers
+	int 	21h
 	mov		cx, even_count
 	lea		di, even_numbers
 	call	print_array
