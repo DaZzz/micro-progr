@@ -4,7 +4,7 @@ assume cs:cseg, ds:dseg, ss:sseg
 ;;;
 ; Includes
 ;;;
-include ..\lib.Asm
+include ..\..\lib.Asm
 
 ;;;
 ; Code
