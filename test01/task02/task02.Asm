@@ -17,14 +17,125 @@ print_linebreak proc uses dx ax
 print_linebreak endp
 
 ;;;
+; Check valid current and previous 
+;;;
+check_valid_word proc uses bx dx cx di si
+	lea 	dx, current_word_buffer
+	mov		di, dx
+	
+	lea		dx, previous_word_buffer
+	mov		si, dx
+	
+	; Check eqaul length
+	cmp		di, si
+	jne		if_false
+	
+	; Check different 1 symbol
+	xor		bh, bh 			; flag that 1 different symbol
+	mov		bl, [di + 1]	; length
+	
+	xor		cx, cx
+	mov		cl, bl
+	
+	; Skip meta indexes
+	add		di, 2
+	add		si, 2
+	
+validation_step:
+	cmp 	[di], [si]
+	je		if_equal
+	
+	; Not equal
+	cmp		bh, 1
+	je		if_false
+	mov		bh, 1
+	
+if_equal:
+	add		di, 1
+	add		si, 1
+	loop 	validation_step
+	
+	cmp		bh,	1
+	je	if_true
+	
+if_false:
+	mov		ax, 0
+	ret
+
+if_true:
+	mov		ax, 1
+	ret
+
+check_valid_word endp
+
+
+;;;
+; Input next word and check that correct
+;;;
+input_next_word proc uses bx dx cx di
+
+try_again:
+	; Intro
+	mov 	ah, 09h
+	lea 	dx, next_word_string
+	int		21h
+	
+	; Read string
+	mov 	ah, 0ah
+	lea		dx, term_buffer
+	int 	21h
+	call 	print_linebreak
+	
+	; Check valid word
+	call 	check_valid_word
+	
+	cmp		ax, 1
+	je 		if_valid_word
+	jmp		if_not_valid
+	
+if_not_valid:
+	; Print wrong word
+	mov 	ah, 09h
+	lea 	dx, wrong_word_string
+	int		21h
+	jmp		try_again
+
+if_valid:
+	call	copy_previous_to_current
+	ret
+input_next_word	endp
+
+;;;
 ; Main body of the game 
 ; AX == 1 - win
 ; AX == 0 - lose
 ;;;
 start_game proc uses bx dx cx di si
-	mov		ax, 1
+
+event_loop:
+	; Input next word
+	call	input_next_word
+
+	; Check win
+	call	check_is_final
+	cmp		ax, 1
+	je		if_final
 	
+	; Check loose
+	call	check_is_first
+	cmp		ax, 1
+	je		if_first
+	
+	jmp		even_loop
+	
+if_final:
+	mov 	ax, 1
 	ret
+	
+if_first:
+	mov		ax, 0
+	ret
+
 start_game endp
 
 start:
@@ -111,7 +222,10 @@ dseg segment byte
 	
 	first_buffer    db 254, 256 dup('$')
 	second_buffer   db 254, 256 dup('$')
-
+	
+	previous_word_buffer		db 254, 256 dup('$')
+	current_word_buffer			db 254, 256 dup('$')
+	
 	linebreak	  	db 13, 10, '$'
 dseg ends
 
