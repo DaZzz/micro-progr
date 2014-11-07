@@ -48,7 +48,7 @@ MilestoneOnTime=2
 MilestoneOnDate=0
 MilestoneOnDateWhen=1
 MilestoneOnDateStatus=0
-MilestoneOnDateDate=31
+MilestoneOnDateDate=7
 MilestoneOnDateTimeYear=2014
 MilestoneOnDateTimeMonth=10
 MilestoneOnDateTimeDate=31
@@ -85,7 +85,7 @@ Options=52
 [Collapse]
 1=
 [Size]
-1=0,0,0,0,551
+1=0,0,0,0,53
 [BookMark]
 0=
 1=

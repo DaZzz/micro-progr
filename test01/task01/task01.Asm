@@ -71,29 +71,67 @@ return_false:
 	mov 	ax, 0
 	ret
 is_polindrome endp
+
+;;;
+; Checks if second_word is a subset of first_word
+;;;
+is_subset proc uses bx dx di
 	
+	ret
+is_subset endp
+
 start:
 	; Basic memory setup
 	mov 	ax, dseg
 	mov 	ds, ax 
 	mov 	es, ax
 	
-	; Intro
+	; Intro 1
 	mov 	ah, 09h
-	lea 	dx, str_input_word
+	lea 	dx, first_string
 	int		21h
 	
-	; Read word
+	; Read string 1
 	mov 	ah, 0ah
-	lea		dx, input_buffer
+	lea		dx, first_buffer
 	int 	21h
 	call 	print_linebreak
 	
-	call	is_polindrome
+	; Intro 1
+	mov 	ah, 09h
+	lea 	dx, second_string
+	int		21h
 	
-	call 	print_number
+	; Read string 2
+	mov 	ah, 0ah
+	lea		dx, second_buffer
+	int 	21h
+	call 	print_linebreak
 	
+	; Output result
+	mov 	ah, 09h
+	lea 	dx, result_string
+	int		21h
+	
+	test 	ax, ax
+	jnz		if_subset
+	jmp		if_not_subset
 
+if_subset:
+	mov 	ah, 09h
+	lea 	dx, subset_msg
+	int		21h
+	call 	print_linebreak
+	jmp		end_if
+	
+if_not_subset:
+	mov 	ah, 09h
+	lea 	dx, not_subset_msg
+	int		21h
+	call 	print_linebreak
+	jmp		end_if
+	
+end_if:		
 	; Pause
 	mov 	ah,1
 	int 	21h
@@ -114,8 +152,13 @@ sseg ends
 ; Data
 ;;;
 dseg segment byte 
-	str_input_word db "Enter string: ", '$'
-	input_buffer   db 254, 256 dup('$')
+	first_string    db "First string: ", '$'
+	second_string   db "Second string: ", '$'
+	result_string   db "Result: ", '$'
+	first_buffer    db 254, 256 dup('$')
+	second_buffer   db 254, 256 dup('$')
+	subset_msg	 	db "Subset!", '$'
+	not_subset_msg	db "Not a subset!", '$'
 dseg ends
 
 end start
