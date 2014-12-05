@@ -1,5 +1,10 @@
 assume cs:cseg, ds:dseg, ss:sseg
 
+;;;
+; Includes
+;;;
+include ..\..\lib.Asm
+
 cseg segment
 
 ;;;
@@ -21,27 +26,25 @@ cycle:
 	int		21h			; print space
 	loop	cycle
 	
-	mov		ah, 09h
-	lea		dx, str_nl
-	int		21h
+	call 	print_linebreak
 	
 	ret
 printArray endp
 
-; Copy Seq of digits from si [length cx] to di with replacing 0 to 1
+;;;
+; Copy digits from si [length cx] to di with replacing 0 to 1
+;;;
 copyAndReplace proc uses ax cx di si
-	
 	cld
 cycle:
 	lodsb
 	cmp		al, 0
-	jne		not_zero
+	jne		if_not_zero
 	mov		al, 1
-not_zero:
+if_not_zero:
 	stosb
 	loop		cycle
 	ret
-
 copyAndReplace endp	
 
 start:
@@ -49,15 +52,15 @@ start:
 	mov		ds, ax
 	mov		es, ax
 
-	mov		cx, 13
+	mov		cx, 11
 
-	lea		si, arr_src
+	lea		si, arr1
 	call		printArray
 	
-	lea		di, arr_dst
+	lea		di, arr2
 	call		copyAndReplace
 	
-	lea		si, arr_dst
+	lea		si, arr2
 	call		printArray
 
 	mov		ah, 01h
@@ -70,9 +73,8 @@ cseg ends
 
 dseg segment byte
 
-	arr_src db 0, 1, 0, 2, 3, 0, 4, 5, 6, 0, 7, 8, 9
-	arr_dst db 13 dup(?)
-	str_nl db 13, 10, '$'
+	arr1 db 2, 0, 1, 0, 0, 2, 3, 4, 6, 0, 5
+	arr2 db 11 dup(?)
 
 dseg ends
 
