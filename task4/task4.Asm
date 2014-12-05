@@ -3,57 +3,16 @@ assume cs:cseg, ds:dseg, ss:sseg
 cseg segment
 
 ;;;
-; Main program
+; Functions
 ;;;
-start:
-	mov		ax, dseg
-	mov		ds, ax
-	mov		es, ax
 
-	lea		si, strs
-	mov		cx, 4
-	mov		bx, str_sz
-	call		print_words
-	
-	mov		ah, 09h
-	lea		dx, str1
-	int		21h
-	
-	call		print_sorted_words
-
-	mov		ah, 01h
-	int		21h
-	
-	mov		ax, 4c00h
-	int		21h
-	
-; Write array of words [wlength bx, alength cx] in si
-print_words proc uses ax cx dx
-	
-	mov		dx, si
-cycle:
-	mov		ah, 09h
-	int		21h
-	
-	push		dx
-	mov		ah, 02h
-	mov		dl, ' '
-	int		21h
-	
-	pop		dx
-	add		dx, bx
-	loop 	cycle
-	
-	mov		ah, 09h
-	lea		dx, str_nl
-	int		21h
-	
-	ret
-
-print_words endp
-
-; Index bubble sort of strs in si, indices in di, size of words in bx, size of strs in cx
-pIndSort proc uses ax bx cx si di
+;;;
+; Bubble sort
+; si - array
+; bx - string lengths
+; di - indexes
+;;;
+bubble_sort proc uses ax bx cx si di
 	
 	p1 equ [bp + 0]
 	p2 equ [bp + 2]
@@ -137,20 +96,25 @@ sorted:
 	pop		ax
 	ret
 
-pIndSort endp
+bubble_sort endp
 
-; Write array of words with sort [wlength bx, alength cx] in si
+;;;
+; Prints sorted array of strings
+; 	bx - word length
+;	cx - array length
+;	si - array
+;;;
 print_sorted_words proc uses ax cx dx di
 	
 	lea		di, buf
-	call		pIndSort
+	call	bubble_sort
 cycle:
-	push		si
+	push	si
 	mov		si, di
 	lodsw
 	mov		di, si
 	pop		si
-	push		si
+	push	si
 	mul		bx
 	add		si, ax
 	
@@ -163,7 +127,7 @@ cycle:
 	int		21h
 	
 	pop		si		
-	loop		cycle
+	loop	cycle
 	
 	mov		ah, 09h
 	lea		dx, str_nl
@@ -172,17 +136,79 @@ cycle:
 	ret
 
 print_sorted_words endp
+
+;;;
+; Prints array of strings
+; 	bx - word length
+;	cx - array length
+;	si - array
+;;;
+print_words proc uses ax cx dx
 	
+	mov		dx, si
+cycle:
+	mov		ah, 09h
+	int		21h
+	
+	push	dx
+	mov		ah, 02h
+	mov		dl, ' '
+	int		21h
+	
+	pop		dx
+	add		dx, bx
+	loop 	cycle
+	
+	mov		ah, 09h
+	lea		dx, str_nl
+	int		21h
+	
+	ret
+
+print_words endp
+
+
+;;;
+; Main program
+;;;
+start:
+	mov		ax, dseg
+	mov		ds, ax
+	mov		es, ax
+	
+	; Intro string
+	mov		ah, 09h
+	lea		dx, str_intro
+	int		21h
+	
+	; Array print
+	lea		si, strs
+	mov		cx, 4
+	mov		bx, str_sz
+	call	print_words
+	
+	; Sorted arra print
+	mov		ah, 09h
+	lea		dx, str1
+	int		21h
+	call	print_sorted_words
+
+	; Pause
+	mov		ah, 01h
+	int		21h
+	
+	mov		ax, 4c00h
+	int		21h
+
 cseg ends
 
 dseg segment byte
-
 	str_sz dw 10
 	strs db "zyy$", 6 dup(?), "zxz$", 6 dup(?), "yzx$", 6 dup(?), "zxy$", 6 dup(?) 
 	str_nl db 13, 10, '$'
 	buf dw 1000 dup(?)
-	str1 db 13,10,"Sorted:",13,10,'$'
-	
+	str1 db 13,10,"Sorted array:",13,10,'$'
+	str_intro db "Initial array: ",13,10,'$'
 dseg ends
 
 sseg segment

@@ -39,5 +39,6 @@ Menu=0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0
 Group=Added files,Assembly,Resources,Misc,Modules
 1=2
 [Find]
-1="pWriteSortedWords"
-2="pWriteWords"
+1="pIndSort"
+2="pWriteSortedWords"
+3="pWriteWords"
