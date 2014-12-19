@@ -64,7 +64,6 @@ cycle_to_compare:
 	mov		al, [si]
 	mov		bl, [di]
 	cmp		al, bl
-	call	print_debug
 	pop 	bx
 	je		continue_loop
 	jg		exit
@@ -149,31 +148,29 @@ swap_strings_if_greater endp
 ;;;
 bubble_sort proc uses ax bx cx si di
 	i equ [bp + 0] ; for outer index
-	j equ [bp + 2] ; for inner index
-	push	cx
 	push	cx
 	mov		bp, sp
-	
+
 	; Iterate over all elements
-	PRINT	cx
+	; for i = n to 1
 cycle_outer:
+	cmp		cx, 1
+	je		exit
+	
 	push	cx
 	mov		i, cx
 	
-	; cs := i - 1
-	dec		cx			
+	; for j = i to 0
+	dec		cx	
 cycle_inner:
-	
-	; compare strings 
-	; swap(a[i], a[j])
-
-no_swap:
+	mov		ax, i	
+	call 	swap_strings_if_greater
 	loop	cycle_inner
 	pop		cx
 	
-	loop 	cycle_outer
-	
-	pop		cx
+	loop	cycle_outer
+
+exit:	
 	pop		cx
 	ret
 bubble_sort endp
@@ -230,17 +227,16 @@ start:
 	call	print_string_array
 	
 	; Bubble sort
-	;mov		bx, word_length
-	;mov		cx, array_length
-	;lea		si, words
-	;call	bubble_sort
-	
-	; Setup params
 	mov		bx, word_length
-	mov		cx, 4			; i = 2
-	mov		ax, 3			; j = 3
+	mov		cx, array_length
 	lea		si, words
-	call	swap_strings_if_greater
+	call	bubble_sort
+	
+	; Intro string
+	call	print_linebreak
+	mov		ah, 09h
+	lea		dx, str_outro
+	int		21h
 	
 	; Print swapped array
 	mov		bx, word_length
@@ -264,11 +260,9 @@ dseg segment byte
 	array_length dw 4
 	words 		 db "zyy$", 6 dup(?), "zxz$", 6 dup(?), "yzx$", 6 dup(?), "zxy$", 6 dup(?)
 	temp_word_buffer db 20 dup(?)
-	
-	str_nl db 13, 10, '$'
-	buf dw 1000 dup(?)
-	str1 db 13,10,"Sorted array:",13,10,'$'
+
 	str_intro db "Initial array: ",13,10,'$'
+	str_outro db "Sorted array: ",13,10,'$'
 dseg ends
 
 sseg segment
