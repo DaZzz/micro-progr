@@ -26,7 +26,7 @@ endm
 ; ax - index 1
 ; cx - index 2
 ;;;
-swap_strings proc uses ax bx cx si di
+swap_strings_if_greater proc uses ax bx cx si di
 	
 	; Indexing from 1
 	dec	ax
@@ -43,6 +43,41 @@ swap_strings proc uses ax bx cx si di
 	
 	mov		bp, sp ; for local variables to work
 	
+	;;;
+	; Compare
+	;;;
+	; set di to a[i] 
+	mov		ax, i
+	mul		bx
+	mov		di, array
+	add		di, ax
+	
+	; set si to a[j] 
+	mov		ax, j
+	mul		bx
+	mov		si, array
+	add		si, ax
+
+	mov		cx, bx	
+cycle_to_compare:
+	push	bx
+	mov		al, [si]
+	mov		bl, [di]
+	cmp		al, bl
+	call	print_debug
+	pop 	bx
+	je		continue_loop
+	jg		exit
+	jl		start_swapping
+		
+continue_loop:
+	inc		si
+	inc		di
+	loop	cycle_to_compare
+	jmp		exit		
+	
+
+start_swapping:	
 	;;;
 	; Copy a[i] to temp
 	;;;
@@ -94,7 +129,9 @@ copy2:
 copy3:
 	movsb
 	loop	copy3	
-	
+
+exit:
+
 	; Release ax, cx
 	pop	ax
 	pop cx
@@ -102,7 +139,7 @@ copy3:
 	
 	ret
 
-swap_strings endp
+swap_strings_if_greater endp
 
 ;;;
 ; Bubble sort
@@ -123,6 +160,8 @@ cycle_outer:
 	push	cx
 	mov		i, cx
 	
+	; cs := i - 1
+	dec		cx			
 cycle_inner:
 	
 	; compare strings 
@@ -190,12 +229,18 @@ start:
 	lea		si, words
 	call	print_string_array
 	
+	; Bubble sort
+	;mov		bx, word_length
+	;mov		cx, array_length
+	;lea		si, words
+	;call	bubble_sort
+	
 	; Setup params
 	mov		bx, word_length
-	mov		cx, 1			; i = 2
-	mov		ax, 2			; j = 3
+	mov		cx, 4			; i = 2
+	mov		ax, 3			; j = 3
 	lea		si, words
-	call	swap_strings
+	call	swap_strings_if_greater
 	
 	; Print swapped array
 	mov		bx, word_length
