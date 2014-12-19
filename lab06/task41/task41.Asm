@@ -66,8 +66,8 @@ cycle_to_compare:
 	cmp		al, bl
 	pop 	bx
 	je		continue_loop
-	jg		exit
-	jl		start_swapping
+	jl		exit
+	jg		start_swapping
 		
 continue_loop:
 	inc		si
@@ -258,7 +258,7 @@ cseg ends
 dseg segment byte
 	word_length  dw 10
 	array_length dw 4
-	words 		 db "zyy$", 6 dup(?), "zxz$", 6 dup(?), "yzx$", 6 dup(?), "zxy$", 6 dup(?)
+	words 		 db "zxz$", 6 dup(?), "yzx$", 6 dup(?),  "zyy$", 6 dup(?), "zxy$", 6 dup(?)
 	temp_word_buffer db 20 dup(?)
 
 	str_intro db "Initial array: ",13,10,'$'
